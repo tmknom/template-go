@@ -1,12 +1,16 @@
-# template
+# template-go
 
-The template repository.
+Template repository for Go.
 
 ## Description
 
-Template repository for developing with GitHub.
+Template repository for creating Go with GitHub.
 
 ## Usage
+
+N/A
+
+## FAQ
 
 N/A
 
@@ -14,6 +18,12 @@ N/A
 
 N/A
 
+## Release notes
+
+See [GitHub Releases][releases].
+
 ## License
 
 Apache 2 Licensed. See [LICENSE](LICENSE) for full details.
+
+[releases]: https://github.com/tmknom/template-go/releases
