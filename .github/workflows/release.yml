@@ -5,12 +5,13 @@ on:
       bump-level:
         type: choice
         required: true
-        description: Bump up to [patch / minor / major]
+        description: Bump up to [auto / patch / minor / major]
         options:
+          - auto
           - patch
           - minor
           - major
-        default: minor
+        default: auto
 
 concurrency: ${{ github.workflow }}
 
