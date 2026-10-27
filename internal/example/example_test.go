@@ -108,9 +108,21 @@ func TestRun_ReadError(t *testing.T) {
 	}
 }
 
+type errWriter struct{ err error }
+
+func (w errWriter) Write([]byte) (int, error) { return 0, w.err }
+
+func TestRun_WriteError(t *testing.T) {
+	want := errors.New("boom")
+	err := Run(context.Background(), Config{In: strings.NewReader("a"), Out: errWriter{err: want}})
+	if !errors.Is(err, want) {
+		t.Errorf("got error %v, want %v", err, want)
+	}
+}
+
 func TestRun_Canceled(t *testing.T) {
 	pr, pw := io.Pipe()
-	defer pw.Close()
+	defer func() { _ = pw.Close() }()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	done := make(chan error, 1)

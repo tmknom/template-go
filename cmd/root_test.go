@@ -98,7 +98,7 @@ func TestExecute_ReadError(t *testing.T) {
 
 func TestExecute_Canceled(t *testing.T) {
 	pr, pw := io.Pipe()
-	defer pw.Close()
+	defer func() { _ = pw.Close() }()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	done := make(chan int, 1)

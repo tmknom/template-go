@@ -19,7 +19,7 @@ const (
 
 // Execute は args を実行し、終了コードを返す。
 func Execute(ctx context.Context, args []string, env Env) int {
-	root := newRootCmd(env)
+	root := newRootCmd(ctx, env)
 	root.SetArgs(args)
 	root.SetIn(env.Stdin)
 	root.SetOut(env.Stdout)
@@ -34,7 +34,7 @@ func Execute(ctx context.Context, args []string, env Env) int {
 	return exitOK
 }
 
-func newRootCmd(env Env) *cobra.Command {
+func newRootCmd(ctx context.Context, env Env) *cobra.Command {
 	return &cobra.Command{
 		Use:          "template-go",
 		Short:        "Template repository for Go",
@@ -42,7 +42,7 @@ func newRootCmd(env Env) *cobra.Command {
 		Args:         cobra.NoArgs,
 		SilenceUsage: true,
 		RunE: func(c *cobra.Command, _ []string) error {
-			return example.Run(c.Context(), example.Config{
+			return example.Run(ctx, example.Config{
 				In:      c.InOrStdin(),
 				Out:     c.OutOrStdout(),
 				WorkDir: env.WorkDir,
