@@ -6,12 +6,9 @@
 # Variables: Go
 REPO_ORIGIN ?= $(shell \git config --get remote.origin.url)
 REPO_NAME = $(shell \basename -s .git $(REPO_ORIGIN))
-REPO_OWNER = $(shell \gh config get -h github.com user)
-VERSION = $(shell \git tag --sort=-v:refname | head -1)
-COMMIT = $(shell \git rev-parse HEAD)
-DATE = $(shell \date +"%Y-%m-%d")
-URL = https://github.com/$(REPO_OWNER)/$(REPO_NAME)/releases/tag/$(VERSION)
-LDFLAGS ?= "-X main.name=$(REPO_NAME) -X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.date=$(DATE) -X main.url=$(URL)"
+VERSION = $(shell \git describe --tags --always --dirty)
+COMMIT = $(shell \git rev-parse --short HEAD)
+LDFLAGS ?= "-X main.version=$(VERSION) -X main.commit=$(COMMIT)"
 
 # Targets: Go
 .PHONY: all
@@ -28,11 +25,11 @@ deps:
 
 .PHONY: build
 build: deps ## build executable binary
-	go build -ldflags=$(LDFLAGS) -o bin/$(REPO_NAME) ./cmd/$(REPO_NAME)
+	go build -ldflags=$(LDFLAGS) -o bin/$(REPO_NAME) .
 
 .PHONY: install
 install: deps ## install
-	go install -ldflags=$(LDFLAGS) ./cmd/$(REPO_NAME)
+	go install -ldflags=$(LDFLAGS) .
 
 .PHONY: run
 run: build ## run command
