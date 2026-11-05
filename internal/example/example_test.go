@@ -9,8 +9,6 @@ import (
 	"testing"
 	"testing/iotest"
 	"time"
-
-	"github.com/google/go-cmp/cmp"
 )
 
 func TestRun(t *testing.T) {
@@ -58,8 +56,8 @@ func TestRun(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if diff := cmp.Diff(tt.want, out.String()); diff != "" {
-				t.Errorf("output mismatch (-want +got):\n%s", diff)
+			if got := out.String(); got != tt.want {
+				t.Errorf("got output %q, want %q", got, tt.want)
 			}
 		})
 	}
